@@ -1,24 +1,32 @@
 package com.example.eventbookingsystem.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "admins")
 public class Admin {
 
-    // Encapsulation (Using Private )
-    private int     id;
-    private String  username;
-    private String  password;
-    private String  email;
-    private String  fullName;
-    private String  role;
+    // Encapsulation (Using Private)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private String username;
+    private String password;
+    private String email;
+
+    @Column(name = "full_name")
+    private String fullName;
+
+    private String role;
+
+    @Column(name = "is_active")
     private boolean isActive;
 
+    // No-arg constructor (required by Spring)
+    public Admin() {}
 
-
-    // No-arg constructorr
-    public Admin() {
-
-    }
-
-    // Parameterize Constructor
+    // Parameterized Constructor
     public Admin(int id, String username, String password, String email, String fullName, String role, boolean isActive) {
         this.id       = id;
         this.username = username;
@@ -29,7 +37,7 @@ public class Admin {
         this.isActive = isActive;
     }
 
-    // Creating a NEW admin
+    // Constructor for creating a NEW admin
     public Admin(String username, String password, String email, String fullName, String role) {
         this.username = username;
         this.password = password;
@@ -40,58 +48,58 @@ public class Admin {
     }
 
     // Encapsulation (Using Getters and Setters)
-
-    public int getId()                  {
+    public int getId()                {
         return id;
     }
-    public void setId(int id)           {
+    public void setId(int id)         {
         this.id = id;
     }
 
-    public String getUsername()         {
+    public String getUsername()       {
         return username;
     }
-    public void setUsername(String u)   {
+    public void setUsername(String u) {
         this.username = u;
     }
 
-    public String getPassword()         {
+    public String getPassword()       {
         return password;
     }
-    public void setPassword(String p)   {
+    public void setPassword(String p) {
         this.password = p;
     }
 
-    public String getEmail()            {
+    public String getEmail()          {
         return email;
     }
-    public void setEmail(String e) {
+    public void setEmail(String e)    {
         this.email = e;
     }
 
-    public String getFullName()         {
+    public String getFullName()       {
         return fullName;
     }
-    public void setFullName(String n)   {
+    public void setFullName(String n) {
         this.fullName = n;
     }
 
-    public String getRole()             {
+    public String getRole()           {
         return role;
     }
-    public void setRole(String r)       {
+    public void setRole(String r)     {
         this.role = r;
     }
 
-    public boolean isActive()           {
+    public boolean isActive()         {
         return isActive;
     }
-    public void setActive(boolean a)    {
+    public void setActive(boolean a)  {
         this.isActive = a;
     }
 
-    // Abstraction(method below subclasses can override )
+    // Abstraction (method subclasses can override)
     public String getPermissionDescription() {
+
         return "Basic admin access";
     }
 
