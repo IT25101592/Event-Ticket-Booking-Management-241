@@ -149,10 +149,15 @@
                                 <% } %>
                             </td>
                             <td>
+                                <a href="/editUser?id=<%= u.getId() %>"
+                                   class="btn btn-warning btn-sm me-1">Edit</a>
                                 <% if (!"admin".equals(u.getRole())) { %>
                                     <form action="/deleteUser" method="post" class="d-inline">
                                         <input type="hidden" name="userId" value="<%= u.getId() %>">
-                                        <button type="submit" class="btn btn-delete btn-sm">Delete</button>
+                                        <button type="submit" class="btn btn-delete btn-sm"
+                                                onclick="return confirm('Are you sure?')">
+                                            Delete
+                                        </button>
                                     </form>
                                 <% } else { %>
                                     <span class="badge badge-protected">Protected</span>
