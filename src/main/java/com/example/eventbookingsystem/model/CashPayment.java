@@ -1,42 +1,10 @@
 package com.example.eventbookingsystem.model;
 
-/**
- * ============================================================
- *  CashPayment.java  –  SUBCLASS of Payment
- *  Place this in: src/main/java/com/eventbooking/model/
- *
- *  OOP CONCEPTS DEMONSTRATED:
- *
- *  1. INHERITANCE
- *     - "extends Payment" → inherits ALL fields from Payment
- *       (paymentId, bookingId, customerName, amount, status, etc.)
- *     - Adds its own fields: amountReceived, changeGiven
- *
- *  2. POLYMORPHISM
- *     - Overrides processPayment() with CASH-specific logic
- *     - Very different from CardPayment's version:
- *       - No card validation needed
- *       - Checks if enough cash was given
- *       - Calculates change to return to customer
- *
- *  3. ENCAPSULATION
- *     - amountReceived and changeGiven are private
- *     - Accessed through getters/setters only
- * ============================================================
- */
 public class CashPayment extends Payment {
 
-    // ── Extra fields specific to cash payments ────────────────────────────
-    private double amountReceived;  // How much cash the customer handed over
-    private double changeGiven;     // How much change to give back
+    private double amountReceived;
+    private double changeGiven;
 
-    // ── Constructor ──────────────────────────────────────────────────────
-
-    /**
-     * Creates a new CashPayment.
-     * @param amountReceived – the cash amount the customer gave
-     *                         (must be >= amount to be valid)
-     */
     public CashPayment(int bookingId, String customerName,
                        double amount, double amountReceived) {
 
@@ -47,27 +15,14 @@ public class CashPayment extends Payment {
         this.changeGiven    = amountReceived - amount; // Pre-calculate change
     }
 
-    /**
-     * No-arg constructor – used when reading from the database.
-     */
     public CashPayment() {
         super();
         setPaymentMethod("CASH"); // Always CASH for this class
     }
 
-    // ── POLYMORPHISM: Override processPayment() ───────────────────────────
-
-    /**
-     * Cash-specific payment processing logic.
-     * Checks if sufficient cash was received, calculates change.
-     * Completely different logic from CardPayment → this is POLYMORPHISM.
-     *
-     * @return result message shown to the user
-     */
     @Override
     public String processPayment() {
 
-        // Check if customer gave enough cash
         if (amountReceived < getAmount()) {
             setStatus("FAILED");
             return "Payment FAILED: Insufficient cash. "
@@ -75,7 +30,6 @@ public class CashPayment extends Payment {
                     + " | Received: Rs." + String.format("%.2f", amountReceived);
         }
 
-        // Sufficient cash received → process successfully
         setStatus("COMPLETED");
         this.changeGiven = amountReceived - getAmount(); // Recalculate change
 
@@ -84,15 +38,20 @@ public class CashPayment extends Payment {
                 + "Change to return: Rs." + String.format("%.2f", changeGiven);
     }
 
-    // ── ENCAPSULATION: Getters ────────────────────────────────────────────
-    public double getAmountReceived() { return amountReceived; }
-    public double getChangeGiven()    { return changeGiven; }
+    public double getAmountReceived() {
+        return amountReceived;
+    }
 
-    // ── ENCAPSULATION: Setters ────────────────────────────────────────────
+    public double getChangeGiven()    {
+        return changeGiven;
+    }
+
     public void setAmountReceived(double amountReceived) {
         this.amountReceived = amountReceived;
-        // Recalculate change whenever amountReceived changes
         this.changeGiven = amountReceived - getAmount();
     }
-    public void setChangeGiven(double changeGiven) { this.changeGiven = changeGiven; }
+
+    public void setChangeGiven(double changeGiven) {
+        this.changeGiven = changeGiven;
+    }
 }
