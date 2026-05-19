@@ -24,6 +24,10 @@ public class EventService {
         return eventRepository.findAll();
     }
 
+    public Event getEventById(int id) {
+        return eventRepository.findById(id).orElse(null);
+    }
+
     public List<Event> searchEvents(String name) {
         List<Event> results = new ArrayList<>();
 

@@ -22,18 +22,51 @@ public class PageController {
     }
 
     @GetMapping("/event-page/{type}")
-    public String filterEventsByType(@PathVariable String type, Model model) {
+    public String showEventsByType(@PathVariable String type, Model model) {
+        model.addAttribute("events", eventService.getAllEvents()
+                .stream()
+                .filter(event -> event.getType().equalsIgnoreCase(type))
+                .toList());
+        return "event";
+    }
 
-        java.util.List<Event> filteredEvents = new java.util.ArrayList<>();
+    @GetMapping("/add-page")
+    public String showAddPage() {
+        return "addEvent";
+    }
 
-        for (Event event : eventService.getAllEvents()) {
-            if (event.getType().equalsIgnoreCase(type)) {
-                filteredEvents.add(event);
-            }
+    @GetMapping("/update-page")
+    public String showUpdatePage() {
+        return "updateEvent";
+    }
+
+    @GetMapping("/delete-page")
+    public String showDeletePage() {
+        return "deleteEvent";
+    }
+
+    @GetMapping("/event-details/{id}")
+    public String showEventDetails(@PathVariable int id, Model model) {
+        Event event = eventService.getEventById(id);
+        model.addAttribute("event", event);
+
+        String imagePath = "/images/default.jpg";
+
+        if (event.getType().equalsIgnoreCase("concert")) {
+            imagePath = "/images/concert.jpg";
+        } else if (event.getType().equalsIgnoreCase("seminar")) {
+            imagePath = "/images/seminar.jpg";
+        } else if (event.getType().equalsIgnoreCase("edm")) {
+            imagePath = "/images/edm.jpg";
+        } else if (event.getType().equalsIgnoreCase("sports")) {
+            imagePath = "/images/sports.jpg";
+        } else if (event.getType().equalsIgnoreCase("conference")) {
+            imagePath = "/images/conference.jpg";
         }
 
-        model.addAttribute("events", filteredEvents);
-        return "event";
+        model.addAttribute("imagePath", imagePath);
+
+        return "details";
     }
 
     @PostMapping("/add-event-form")
@@ -50,35 +83,7 @@ public class PageController {
 
     @PostMapping("/update-event-form")
     public String updateEventFromForm(Event event) {
-
         eventService.updateEvent(event.getId(), event);
-
         return "redirect:/event-page";
-    }
-
-    @GetMapping("/event-details/{id}")
-    public String showEventDetails(@PathVariable int id, Model model) {
-
-        Event selectedEvent = null;
-        String imagePath = "/images/concert.jpg";
-
-        for (Event event : eventService.getAllEvents()) {
-            if (event.getId() == id) {
-                selectedEvent = event;
-
-                if (event.getType().equalsIgnoreCase("seminar")) {
-                    imagePath = "/images/seminar.jpg";
-                } else if (event.getType().equalsIgnoreCase("sports")) {
-                    imagePath = "/images/edm.jpg";
-                }
-
-                break;
-            }
-        }
-
-        model.addAttribute("event", selectedEvent);
-        model.addAttribute("imagePath", imagePath);
-
-        return "details";
     }
 }

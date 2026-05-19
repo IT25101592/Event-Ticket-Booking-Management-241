@@ -146,6 +146,44 @@
             cursor:pointer;
             margin-top:10px;
         }
+
+        .action-buttons{
+            display:flex;
+            justify-content:center;
+            gap:20px;
+            margin:40px 0;
+        }
+
+        .add-btn, .update-btn, .delete-btn{
+            text-decoration:none;
+            color:white;
+            padding:14px 28px;
+            border-radius:10px;
+            font-weight:bold;
+            font-size:16px;
+            box-shadow:0 4px 10px rgba(0,0,0,0.15);
+            transition:0.3s;
+        }
+
+        .add-btn{
+            background:#16a34a;
+        }
+
+        .update-btn{
+            background:#f59e0b;
+        }
+
+        .delete-btn{
+            background:#dc2626;
+        }
+
+        .add-btn:hover,
+        .update-btn:hover,
+        .delete-btn:hover{
+            transform:translateY(-2px);
+            opacity:0.9;
+        }
+
     </style>
 </head>
 <body>
@@ -153,14 +191,6 @@
 <!-- Navbar -->
 <div class="navbar">
     <div class="logo">EventHub</div>
-
-    <div class="nav-links">
-        <a href="#">Events</a>
-        <a href="#">Movies</a>
-        <a href="#">Sports</a>
-        <a href="#">Concerts</a>
-        <a href="#">Theatre</a>
-    </div>
 </div>
 
 <!-- Categories -->
@@ -197,6 +227,10 @@
                     <img src="/images/conference.jpg" alt="Conference">
                 </c:when>
 
+                <c:when test="${event.type.toLowerCase() == 'edm'}">
+                    <img src="/images/edm.jpg" alt="Edm">
+                </c:when>
+
                 <c:otherwise>
                     <img src="/images/default.jpg" alt="Event">
                 </c:otherwise>
@@ -215,47 +249,10 @@
         </div>
     </c:forEach>
 
-    <!-- Admin Section -->
-    <div class="admin-box">
-        <h2>Add New Event</h2>
-
-        <form action="/add-event-form" method="post">
-            <input type="text" name="id" placeholder="Event ID" required>
-            <input type="text" name="name" placeholder="Event Name" required>
-            <input type="text" name="type" placeholder="Event Type" required>
-            <input type="text" name="date" placeholder="Date" required>
-            <input type="text" name="venue" placeholder="Venue" required>
-            <input type="text" name="seats" placeholder="Seats" required>
-            <input type="text" name="price" placeholder="Price" required>
-
-            <button type="submit">Add Event</button>
-        </form>
-
-        <hr style="margin:20px 0;">
-
-        <h2>Delete Event</h2>
-
-        <form action="/delete-event-form" method="post">
-            <input type="text" name="id" placeholder="Enter Event ID to Delete" required>
-            <button type="submit" style="background:red;">Delete Event</button>
-        </form>
-
-        <hr style="margin:20px 0;">
-
-        <h2>Update Event</h2>
-
-        <form action="/update-event-form" method="post">
-            <input type="text" name="id" placeholder="Event ID" required>
-            <input type="text" name="name" placeholder="New Event Name" required>
-            <input type="text" name="type" placeholder="New Event Type" required>
-            <input type="text" name="date" placeholder="New Date" required>
-            <input type="text" name="venue" placeholder="New Venue" required>
-            <input type="text" name="seats" placeholder="New Seats" required>
-            <input type="text" name="price" placeholder="New Price" required>
-
-            <button type="submit" style="background:orange;">Update Event</button>
-        </form>
-
+    <div class="action-buttons">
+        <a href="/add-page" class="add-btn">Add Event</a>
+        <a href="/update-page" class="update-btn">Update Event</a>
+        <a href="/delete-page" class="delete-btn">Delete Event</a>
     </div>
 
 </div>
